@@ -1,0 +1,72 @@
+// TodoList.scss
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+  
+      &:disabled {
+        background-color: #ccc; // Disabled gumb je sivi
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  .todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #ffffff;
+  
+    span {
+      flex: 1; // Ovo osigurava da span zauzme sav preostali prostor
+      font-size: 16px;
+      color: #333;
+      text-align: left; // Poravnava tekst ulijevo
+      margin-right: 15px; // Daje razmak između teksta i gumba
+      
+    }
+  
+    button {
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px 15px;
+      font-size: 14px;
+      width: 80px; // Postavlja fiksnu širinu gumba "Izbriši"
+      text-align: center;
+    }
+  }
+  

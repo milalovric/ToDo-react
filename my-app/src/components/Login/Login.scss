@@ -1,0 +1,62 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Puna visina ekrana
+  background-color: #f0f0f0; // Pozadinska boja
+
+  &__form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    div {
+      margin-bottom: 20px;
+      text-align: left;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+    }
+
+    button {
+      background-color: #007bff; // Plava boja
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+      width: 100%;
+
+      &:hover {
+        background-color: #0056b3; // Tamnija plava boja za hover
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
