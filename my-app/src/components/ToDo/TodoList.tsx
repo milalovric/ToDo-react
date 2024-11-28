@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { TodoItems } from './TodoItems';
 import './TodoList.scss';
-import { addTask } from '../../services/taskService';
+import { addTask, getUserTasks, deleteTask, updateTask, getUserTasksRealtime } from '../../services/taskService';
 import { useAuth } from '../../hooks/useAuth';
 import { Task } from '../../types/Task';
 
@@ -20,9 +19,28 @@ export const TodoList: React.FC = () => {
     setSelectedCategory(categoryFromState);
   }, [location.state, category]);
 
-  const removeTask = (index: number) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-  };
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (user) {
+        const tasksData = await getUserTasks(user.uid);
+        setTasks(tasksData);
+      }
+    };
+
+    fetchTasks();
+  }, [user]);
+
+  useEffect(() => {
+    let unsubscribe: () => void;
+    if (user) {
+      unsubscribe = getUserTasksRealtime(user.uid, setTasks);
+    }
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user]);
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +63,24 @@ export const TodoList: React.FC = () => {
     }
   };
 
+  const handleToggleComplete = async (task: Task) => {
+    await updateTask(task.id!, { completed: !task.completed });
+    setTasks(tasks.map(t => t.id === task.id ? { ...t, completed: !t.completed } : t));
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    await deleteTask(taskId);
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
+  const filteredTasks = selectedCategory
+    ? tasks.filter((task) => task.category === selectedCategory)
+    : tasks;
+
+  if (!user) {
+    return <div>Please log in to view tasks.</div>;
+  }
+
   return (
     <div className='todo-list'>
       <div className='todo-container'>
@@ -60,17 +96,21 @@ export const TodoList: React.FC = () => {
           <button type="submit">Add Task</button>
         </form>
         <div>
-        {tasks.map((task, index) => (
-          <TodoItems 
-            key={index} 
-            todo={task.title} 
-            onRemove={() => removeTask(index)} 
-          />
-        ))}
-      </div>
-        
+          {filteredTasks.map((task) => (
+            <div key={task.id} className="task-item">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleToggleComplete(task)}
+              />
+              {task.title}
+              <button onClick={() => handleDeleteTask(task.id!)}>Delete</button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
+export default TodoList;
